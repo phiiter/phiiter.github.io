@@ -8,6 +8,7 @@ function preload() {
     game.load.spritesheet('dude', "dude.png", 64, 64);
 }
 
+var backGr;
 var platforms;
 var player;
 var cursors;
@@ -15,20 +16,20 @@ var cursors;
 var score = 0;
 var scoreText;
 
-
+var lastPlatformX = 1000;
 
 function create() {
         
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    var backGr = game.add.tileSprite(0, 0, 10000, 700, 'backGround');
+    backGr = game.add.sprite(0, 0, 'backGround');
     game.world.setBounds(0, 0, 10000, 700);
-    backGr.width = 1000; backGr.height = 700;
+    backGr.width = 10000; backGr.height = 700;
     
     
     //GENERATE PLATFORMS
     platforms = game.add.group();
     platforms.enableBody = true;
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 100; i++) {
         //  Create a star inside of the 'stars' group
         var ledge = platforms.create(i * 200 + Math.random() * 200, game.world.randomY, 'platform');
         ledge.body.immovable = true;
@@ -41,9 +42,8 @@ function create() {
     player = game.add.sprite(32, game.world.height - 150, 'dude');
     
     game.physics.arcade.enable(player);
-    player.body.bounce.y = 0.2;
-    player.body.gravity.y = 300;
-    player.body.collideWorldBounds = true;
+    player.body.gravity.y = 1500;
+    player.body.collideWorldBounds = false;
     
     player.animations.add('run', [1,2,3,4], 10, true);
     
@@ -52,6 +52,7 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     //SCORE TEXT SETUP
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#0ff00f' });
+    scoreText.fixedToCamera = true;
     
     game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
 };
@@ -60,26 +61,23 @@ function create() {
 
 function update() {
     
+    //backGr.tilePosition.x += player.body.velocity.x /75;
+    
     game.physics.arcade.collide(player, platforms);
     
     player.body.velocity.x = 0;
     
-    if (cursors.left.isDown)
-    {
+    if (cursors.left.isDown) {
         //  Move to the left
-        player.body.velocity.x = -150;
+        player.body.velocity.x = -200;
 
         player.animations.play('run');
-    }
-    else if (cursors.right.isDown)
-    {
+    } else if (cursors.right.isDown) {
         //  Move to the right
-        player.body.velocity.x = 150;
+        player.body.velocity.x = 200;
 
         player.animations.play('run');
-    }
-    else
-    {
+    } else {
         //  Stand still
         player.animations.stop();
 
@@ -87,9 +85,8 @@ function update() {
     }
     
     //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.body.velocity.y = -400;
+    if (cursors.up.isDown && player.body.touching.down) {
+        player.body.velocity.y = -1100;
     }
     
     if (!player.body.touching.down) {
@@ -97,15 +94,24 @@ function update() {
         player.frame = 0;
     }
     
-    scoreText.text = 'score: ' + player.x/10;
+    scoreText.text = 'score: ' + Math.floor( player.x / 10 );
     
+    /*
+    if (lastPlatformX < player.x + 1000) {              //Create new platform if last created is nearer than (player position + screenwidth)
+        createPlatform();
+    }
+    */
     
     
 };
 
 
-
-
+//Creates new platform & updates the lastPlatformX variable
+function createPlatform() {
+    var ledge = platforms.create(lastPlatfromX + Math.random() * 200, game.world.randomY, 'platform');
+    ledge.body.immovable = true;
+    lastPlatformX = ledge.x;
+}
 
 
 
