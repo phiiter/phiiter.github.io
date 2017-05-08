@@ -13,3 +13,14 @@ game.state.add('play4', play4State);
 game.state.add('gameOver', gameOverState);
 
 game.state.start('load');
+
+
+
+function platformY() {
+    var randY = game.world.randomY;
+    if (lastY > 400 && randY < 200) {
+        return randY + 400;
+    } else {
+        return randY;
+    }
+}

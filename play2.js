@@ -5,6 +5,7 @@ var cursors;
 
 var score = 0;
 var scoreText;
+var lastY = 680;
 
 var star;
 
@@ -16,36 +17,45 @@ var play2State = {
     create: function() {
         
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        backGr = game.add.sprite(0, 0, 'backGround');
+        backGr = game.add.sprite(0, 0, 'backGround2');
         game.world.setBounds(0, 0, 10000, 700);
         backGr.width = 10000; backGr.height = 700;
-    
-    
-        //GENERATE PLATFORMS
-        platforms = game.add.group();
-        platforms.enableBody = true;
-        for (var i = 0; i < 100; i++) {
-            //  Create a star inside of the 'stars' group
-            var ledge = platforms.create(i * 200 + Math.random() * 200, game.world.randomY, 'platform');
-            ledge.body.immovable = true;
-        }
-        ledge = platforms.create(30, game.world.height - 50, 'platform');
-        ledge.body.immovable = true;
     
     
         //PLAYER SHIT...
         player = game.add.sprite(32, game.world.height - 150, 'dude');
     
         game.physics.arcade.enable(player);
-        player.body.gravity.y = 1700;
+        player.body.gravity.y = 1500;
         player.body.collideWorldBounds = false;
     
         player.animations.add('run', [1,2,3,4], 10, true);
+        
+        
+        
+        //GENERATE PLATFORMS
+        platforms = game.add.group();
+        platforms.enableBody = true;
+        for (var i = 0; i < 100; i++) {
+            var platY = platformY();
+            //  Create a star inside of the 'stars' group
+            var ledge = platforms.create(i * 200 + Math.random() * 200, platY, 'platform');
+            ledge.body.immovable = true;
+            lastY = platY;
+        }
+        ledge = platforms.create(30, game.world.height - 50, 'platform');
+        ledge.body.immovable = true;
+    
+    
+        
     
         
         //GOAL STAR
-        star = game.add.sprite(game.world.width - 10, game.world.height / 2, 'star');
-    
+        star = game.add.sprite(game.world.width - 80, game.world.height / 2, 'star');
+        game.physics.arcade.enable(star);
+        star.enableBody = true;
+        star.body.immovable = true;
+        
         //ARROW-KEY SETUP
         cursors = game.input.keyboard.createCursorKeys();
         //SCORE TEXT SETUP
@@ -62,7 +72,7 @@ var play2State = {
         //backGr.tilePosition.x += player.body.velocity.x /75;
     
         game.physics.arcade.collide(player, platforms);
-        game.physics.arcade.overlap(player, star, this.advance, null, this);
+        game.physics.arcade.collide(player, star, this.advance, null, this);
     
     
         player.body.velocity.x = 0;
@@ -86,7 +96,7 @@ var play2State = {
     
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
-            player.body.velocity.y = -1300;
+            player.body.velocity.y = -1100;
         }
     
         if (!player.body.touching.down) {

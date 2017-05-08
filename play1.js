@@ -5,6 +5,7 @@ var cursors;
 
 var score = 0;
 var scoreText;
+var lastY = 680;
 
 var star;
 
@@ -13,21 +14,9 @@ var play1State = {
     create: function() {
         
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        backGr = game.add.sprite(0, 0, 'backGround');
+        backGr = game.add.sprite(0, 0, 'backGround1');
         game.world.setBounds(0, 0, 10000, 700);
         backGr.width = 10000; backGr.height = 700;
-    
-    
-        //GENERATE PLATFORMS
-        platforms = game.add.group();
-        platforms.enableBody = true;
-        for (var i = 0; i < 100; i++) {
-            //  Create a star inside of the 'stars' group
-            var ledge = platforms.create(i * 200 + Math.random() * 200, game.world.randomY, 'platform');
-            ledge.body.immovable = true;
-        }
-        ledge = platforms.create(30, game.world.height - 50, 'platform');
-        ledge.body.immovable = true;
     
     
         //PLAYER SHIT...
@@ -38,10 +27,28 @@ var play1State = {
         player.body.collideWorldBounds = false;
     
         player.animations.add('run', [1,2,3,4], 10, true);
+        
+        
+        
+        //GENERATE PLATFORMS
+        platforms = game.add.group();
+        platforms.enableBody = true;
+        for (var i = 0; i < 100; i++) {
+            var platY = platformY();
+            //  Create a star inside of the 'stars' group
+            var ledge = platforms.create(i * 200 + Math.random() * 200, platY, 'platform');
+            ledge.body.immovable = true;
+            lastY = platY;
+        }
+        ledge = platforms.create(30, game.world.height - 50, 'platform');
+        ledge.body.immovable = true;
+    
+    
+        
     
         
         //GOAL STAR
-        star = game.add.sprite(game.world.width - 9000, game.world.height / 2, 'star');
+        star = game.add.sprite(game.world.width - 80, game.world.height / 2, 'star');
         game.physics.arcade.enable(star);
         star.enableBody = true;
         star.body.immovable = true;
