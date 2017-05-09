@@ -16,6 +16,7 @@ game.state.start('load');
 
 
 
+//FOR PLATFORM CREATING
 function platformY() {
     var randY = game.world.randomY;
     if (lastY > 400 && randY < 200) {
@@ -24,3 +25,6 @@ function platformY() {
         return randY;
     }
 }
+
+//TO CHECK IF GAME ENDED IN FALL OR SUCCES
+var dudeFell = false;

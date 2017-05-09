@@ -105,6 +105,11 @@ var play3State = {
         }
     
         scoreText.text = 'score: ' + Math.floor( player.x / 10 );
+        
+        if (player.y > 800) {
+            dudeFell = true;
+            game.state.start('gameOver');
+        }
 
     },
     

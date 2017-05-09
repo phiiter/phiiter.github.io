@@ -3,7 +3,7 @@ var gameOverState = {
     
     create: function() {
         
-        if() {
+        if(dudeFell) {
             var infoText = game.add.text(120, 150, 'Valitettavasti tipuit kivihiilen matkasta. \nSaadaksesi tietää lisää, aloita peli alusta tai \nsiirry sivustolle www.hiilitieto.fi. Kiitos mielenkiinnostasi, \nliity sinäkin mukaan vaikuttamaan kivihiilen \nenergiakäytön säilyttämisen puolesta!', {font: '22px Lucida Console', fill: '#ffffff'});
    
             var resumeText = game.add.text(120, 500, 'Paina välilyöntiä aloittaaksesi alusta!', {font: '25px Lucida Console', fill: '#ffffff'});
@@ -24,7 +24,11 @@ var gameOverState = {
     },
     
     
-    
+    start: function()  {
+        
+        game.state.start('play1');
+        
+    }
     
     
     

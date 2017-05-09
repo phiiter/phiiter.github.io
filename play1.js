@@ -61,6 +61,9 @@ var play1State = {
     
         game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
         
+        //RESET dudeFell to false
+        dudeFell = false;
+        
     },
     
     
@@ -102,6 +105,11 @@ var play1State = {
         }
     
         scoreText.text = 'score: ' + Math.floor( player.x / 10 );
+        
+        if (player.y > 800) {
+            dudeFell = true;
+            game.state.start('gameOver');
+        }
 
     },
     
