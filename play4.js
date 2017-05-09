@@ -25,7 +25,7 @@ var play4State = {
         player = game.add.sprite(32, game.world.height - 150, 'dude');
     
         game.physics.arcade.enable(player);
-        player.body.gravity.y = 1500;
+        player.body.gravity.y = 400;
         player.body.collideWorldBounds = false;
     
         player.animations.add('run', [1,2,3,4], 10, true);
@@ -78,12 +78,12 @@ var play4State = {
     
         if (cursors.left.isDown) {
             //  Move to the left
-            player.body.velocity.x = -300;
+            player.body.velocity.x = 400;
 
             player.animations.play('run');
         } else if (cursors.right.isDown) {
             //  Move to the right
-            player.body.velocity.x = 300;
+            player.body.velocity.x = -400;
 
             player.animations.play('run');
         } else {
@@ -95,7 +95,7 @@ var play4State = {
     
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
-            player.body.velocity.y = -1100;
+            player.body.velocity.y = -600;
         }
     
         if (!player.body.touching.down) {
