@@ -3,14 +3,15 @@ var gameOverState = {
     
     create: function() {
         
+        game.add.sprite(0, 0, 'gameOverBackGround');
+        
         if(dudeFell) {
             
-        var header = game.add.text(300, 50, 'GAME OVER', {font: '50px Lucida Console', fill: '#ffffff'})
-        var description = game.add.text(80, 150, 'Valitettavasti tipuit kivihiilen matkasta. \nSaadaksesi tietää lisää, aloita peli alusta tai \nsiirry sivustolle www.hiilitieto.fi. \nKiitos mielenkiinnostasi; \nliity sinäkin mukaan vaikuttamaan kivihiilen \nenergiakäytön säilyttämisen puolesta!', {font: '30px Lucida Console', fill: '#ffffff'}); 
-        var resumeText = game.add.text(200, 400, 'Paina välilyöntiä aloittaaksesi alusta!', {font: '25px Lucida Console', fill: '#ffffff'});
+        var description = game.add.text(380, 50, 'Valitettavasti tipuit kivihiilen matkasta. \nSaadaksesi tietää lisää, aloita peli alusta tai \nsiirry sivustolle www.hiilitieto.fi. \nKiitos mielenkiinnostasi; \nliity sinäkin mukaan vaikuttamaan kivihiilen \nenergiakäytön säilyttämisen puolesta!', {font: '20px Lucida Console', fill: '#ffffff'}); 
+        var resumeText = game.add.text(400, 600, 'Paina välilyöntiä \naloittaaksesi alusta!', {font: '35px Lucida Console', fill: '#000000', align: 'center'});
         } else {
-            
-            var infoText = game.add.text(120, 150, 'Onnea! Olet kulkenut kivihiilen mukana sen matkan aina \n350 miljoonan vuoden takaa tähän päivään asti. \nMatkan aikana sait arvokasta tietoa kivihiilestä, joka kannattaa pitää mielessä. \nLiity sinäkin mukaan vaikuttamaan \nkivihiilen energiakäytön säilyttämisen puolesta!', {font: '22px Lucida Console', fill: '#ffffff'});
+            var header = game.add.text(630, 80, 'ONNEA!', {font: '50px Lucida Console', fill: '#000000' });
+            var infoText = game.add.text(450, 150, ' Olet kulkenut kivihiilen mukana \nsen matkan aina 350 miljoonan vuoden takaa \ntähän päivään asti. Matkan aikana sait \narvokasta tietoa kivihiilestä, \njoka kannattaa pitää mielessä. \nLiity sinäkin mukaan vaikuttamaan \nkivihiilen energiakäytön säilyttämisen puolesta!', {font: '18px Lucida Console', fill: '#ffffff', align: 'center'});
             
             
         }

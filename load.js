@@ -16,6 +16,7 @@ var loadState = {
         game.load.image('backGroundM1', "middle1_tausta.jpg");
         game.load.image('backGroundM2', "middle2_tausta.jpg");
         game.load.image('backGroundM3', "middle3_tausta.jpg");
+        game.load.image('gameOverBackGround', "gameover_tausta.jpg");
     },
     
     create: function() {
