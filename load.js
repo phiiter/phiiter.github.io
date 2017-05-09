@@ -13,8 +13,9 @@ var loadState = {
         game.load.spritesheet('dude', "dude.png", 64, 64);
         game.load.image('star', "star.png");
         game.load.audio('backGroundMusic', ["Star Commander1.mp3", "Star_Commander1.ogg"]);
-        game.load.image('backGroundM1', "middle1_tausta.jpg")
-
+        game.load.image('backGroundM1', "middle1_tausta.jpg");
+        game.load.image('backGroundM2', "middle2_tausta.jpg");
+        game.load.image('backGroundM3', "middle3_tausta.jpg");
     },
     
     create: function() {

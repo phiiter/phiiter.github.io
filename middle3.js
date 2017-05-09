@@ -2,12 +2,12 @@ var middle3State = {
     
     create: function() {
         
-        game.add.sprite(0, 0, 'backGroundMenu');
+        game.add.sprite(0, 0, 'backGroundM3');
         
         
-        var infoText = game.add.text(120, 150, 'On fakta, että hiili ei ole ympäristöystävällisin \nenergiantuotantovaihtoehto, ja tämän vuoksi hallitus \nyhdessä muiden tahojen kanssa puuhaa kivihiilen kieltolakia. \nTämä on kuitenkin järjetön ratkaisu, \nsillä mikään toinen energianlähde ei ole yhtä varma, edullinen, \nriittävä ja turvallinen kuin kivihiili. \nKivihiili on taloudellinen tapa tuottaa sähköä ja lämpöä, \nja toisin kuin öljy- ja maakaasuvarat, \nhiili ei sijaitse poliittisesti tai taloudellisesti \nepävakailla alueilla eikä näin \nollen ole kriisiherkkä energianlähde. \nHiilimarkkinat pysyvät järkevinä, koska hiilen tuottajia on useita \nja sitä löytyy tasaisesti ympäri maapalloa. ', {font: '22px Lucida Console', fill: '#ffffff'});
+        var infoText = game.add.text(20, 20, 'On fakta, että hiili ei ole ympäristöystävällisin energiantuotantovaihtoehto, \nja tämän vuoksi hallitus yhdessä muiden tahojen kanssa puuhaa kivihiilen kieltolakia. \nTämä on kuitenkin järjetön ratkaisu, sillä mikään toinen energianlähde ei ole yhtä \nvarma, edullinen, riittävä ja turvallinen kuin kivihiili. \nKivihiili on taloudellinen tapa tuottaa sähköä ja lämpöä, ja toisin kuin \nöljy- ja maakaasuvarat, hiili ei sijaitse \npoliittisesti tai taloudellisesti epävakailla alueilla \neikä näin ollen ole kriisiherkkä energianlähde. \nHiilimarkkinat pysyvät järkevinä, koska hiilen tuottajia on useita \nja sitä löytyy tasaisesti ympäri maapalloa. ', {font: '18px Lucida Console', fill: '#ffffff', align: 'center'});
    
-        var resumeText = game.add.text(120, 600, 'Paina välilyöntiä jatkaaksesi!', {font: '25px Lucida Console', fill: '#ffffff'});
+        var resumeText = game.add.text(450, 650, 'Paina välilyöntiä jatkaaksesi!', {font: '28px Lucida Console', fill: '#ffffff'});
          
         game.stage.backgroundColor = "#408000";
          
