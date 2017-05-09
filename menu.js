@@ -11,11 +11,8 @@ var menuState = {
         var description2 = game.add.text(485, 105, 'Kivihiili alkoi muodostua kivihiilikaudella \n350 miljoonaa vuotta sitten. \nTällöin maailma oli rehevän kasvillisuuden peitossa. \nAikojen saatossa ja maanpinnan poimuttuessa \nkasveja ja turvetta hautautui hapettomiin \noloihin hiekan, saven ja veden alle. \nNäissä olosuhteissa syntyi kivihiili, \njoka alun alkaen on siis kasveista ja \nturpeesta muodostunutta energiaa. ', {font: '16px Lucida Console', fill: '#ffffff', align: 'center'}); 
         
         var starText = game.add.text(150, 600, 'Paina välilyöntiä aloittaaksesi seikkailun \nja kerää tähti päästäksesi seuraavalle tasolle!', {font: '26px Lucida Console', fill: '#ffffff', align: 'center'});
-        
-        var music = game.add.audio('backGroundMusic');
-        music.loop = true;
-        music.play();
-        
+  
+
         
         var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         spaceKey.onDown.addOnce(this.start, this);

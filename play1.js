@@ -17,6 +17,12 @@ var play1State = {
         backGr = game.add.sprite(0, 0, 'backGround1');
         game.world.setBounds(0, 0, 10000, 700);
         backGr.width = 10000; backGr.height = 700;
+        
+        game.sound.stopAll();
+        var music = game.add.audio('backGroundMusic');
+        music.loop = true;
+        music.play();
+        
     
     
         //PLAYER SHIT...
