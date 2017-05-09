@@ -1,5 +1,10 @@
-var game = new Phaser.Game(1000, 700, Phaser.AUTO, '');
+var game = new Phaser.Game(1000, 700, Phaser.AUTO, '');    
+var music;
 
+function create() {
+music = game.add.audio('backGroundMusic');
+music.play();
+}
 
 game.state.add('load', loadState);
 game.state.add('menu', menuState);
