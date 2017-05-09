@@ -4,6 +4,11 @@ var gameOverState = {
     create: function() {
         
         game.add.sprite(0, 0, 'gameOverBackGround');
+        game.sound.stopAll();
+        var music = game.add.audio('gameOverMusic');
+        music.loop = true;
+        music.play();
+    
         
         if(dudeFell) {
             

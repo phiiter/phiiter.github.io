@@ -17,6 +17,7 @@ var loadState = {
         game.load.image('backGroundM2', "middle2_tausta.jpg");
         game.load.image('backGroundM3', "middle3_tausta.jpg");
         game.load.image('gameOverBackGround', "gameover_tausta.jpg");
+        game.load.audio('gameOverMusic', ["Nighttime-Escape.mp3", "Nighttime-Escape.ogg"]);
     },
     
     create: function() {
