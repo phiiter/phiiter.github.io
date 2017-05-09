@@ -12,6 +12,10 @@ var menuState = {
         
         var starText = game.add.text(5, 560, 'Paina välilyöntiä aloittaaksesi seikkailun ja kerää tähti päästäksesi seuraavalle tasolle!', {font: '26px Arial', fill: '#ffffff'});
         
+        var music = game.add.audio('backGroundMusic');
+        music.loop = true;
+        music.play();
+        
         
         var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         spaceKey.onDown.addOnce(this.start, this);
