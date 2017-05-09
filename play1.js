@@ -79,12 +79,12 @@ var play1State = {
     
         if (cursors.left.isDown) {
             //  Move to the left
-            player.body.velocity.x = -300;
+            player.body.velocity.x = -350;
 
             player.animations.play('run');
         } else if (cursors.right.isDown) {
             //  Move to the right
-            player.body.velocity.x = 300;
+            player.body.velocity.x = 350;
 
             player.animations.play('run');
         } else {

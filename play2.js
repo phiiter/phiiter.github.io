@@ -39,7 +39,7 @@ var play2State = {
         for (var i = 0; i < 100; i++) {
             var platY = platformY();
             //  Create a star inside of the 'stars' group
-            var ledge = platforms.create(i * 300 + Math.random() * 500, platY, 'platform');
+            var ledge = platforms.create(i * 700 + Math.random() * 700, platY, 'platform');
             ledge.body.immovable = true;
             lastY = platY;
         }
@@ -96,7 +96,7 @@ var play2State = {
     
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
-            player.body.velocity.y = -900;
+            player.body.velocity.y = -700;
         }
     
         if (!player.body.touching.down) {

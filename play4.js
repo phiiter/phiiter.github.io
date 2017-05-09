@@ -78,12 +78,12 @@ var play4State = {
     
         if (cursors.left.isDown) {
             //  Move to the left
-            player.body.velocity.x = -800;
+            player.body.velocity.x = 400;
 
             player.animations.play('run');
         } else if (cursors.right.isDown) {
             //  Move to the right
-            player.body.velocity.x = 800;
+            player.body.velocity.x = -400;
 
             player.animations.play('run');
         } else {
@@ -95,7 +95,7 @@ var play4State = {
     
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
-            player.body.velocity.y = -800;
+            player.body.velocity.y = -600;
         }
     
         if (!player.body.touching.down) {
