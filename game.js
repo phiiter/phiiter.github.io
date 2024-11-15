@@ -1,10 +1,15 @@
 let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 1356);
 let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 635);
 
-// configure the game
-const gravities = [1500, 2500, 500, 1500];
-const jumpForces = [-1200, -1800, -300, -1200];
-const backgrounds = ['backGround1', 'backGround2', 'backGround3', 'backGround4'];
+// configure the game scenes
+const gravities = [1500, 2500, 14, 1500];
+const jumpForces = [-1200, -1600, -500, -1200];
+const backgrounds = ['backGround1', 'backGround1', 'backGround1', 'backGround1'];
+
+// configure the menu scenes
+const menuTitles = ['THE JOURNEY OF COAL', 'YOU GOT YOUR FIRST COAL', 'backGround3', 'backGround4', 'YOU WON!'];
+const menuTexts = ['Go gather coal! See if you can catch all 4 pieces of coal and win the game.', 'Coal is the first fossil fuel utilized by humans.\nWithout coal, our industry would certainly not be where it is today, as coal is an\nenergy source that enabled the Industrial Revolution in England in the 18th century and gave\nrise to the industrial culture through which our world has developed into its current form.', 'backGround3', 'backGround4', 'We hope you have learned a lot and understand coal better.'];
+const menuPrompts = ['Press "SPACE BAR" to start.', 'Press "SPACE BAR" to continue.', 'Press "SPACE BAR" to continue.', 'Press "SPACE BAR" to continue.', 'Press "SPACE BAR" to start again.']
 var config = {
     type: Phaser.AUTO,
     width: vw - 16,
@@ -18,33 +23,35 @@ var config = {
     },
     scene: [
         Load, 
-        menu, 
-        new play1(
+        new Menu('menu', menuTitles[0], menuTexts[0], menuPrompts[0], 'play1'), 
+        new Play(
             'play1',
             gravities[0], 
             jumpForces[0], 
-            backgrounds[0]
+            backgrounds[0],
         ), 
-        middle1,
-        new play1(
+        new Menu('menu2', menuTitles[1], menuTexts[1], menuPrompts[1], 'play2'),
+        new Play(
             'play2',
             gravities[1], 
             jumpForces[1], 
-            backgrounds[1]
+            backgrounds[1],
         ),
-        new play1(
+        new Menu('menu3', menuTitles[2], menuTexts[2], menuPrompts[2], 'play3'),
+        new Play(
             'play3',
             gravities[2], 
             jumpForces[2], 
-            backgrounds[2]
+            backgrounds[2],
         ),
-        new play1(
-            'play1',
+        new Menu('menu4', menuTitles[3], menuTexts[3], menuPrompts[3], 'play4'),
+        new Play(
+            'play4',
             gravities[3], 
             jumpForces[3], 
-            backgrounds[3]
-        )
-
+            backgrounds[3],
+        ),
+        new Menu('menu5', menuTitles[4], menuTexts[4], menuPrompts[4], 'play1')
     ]
 };
 

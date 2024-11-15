@@ -10,8 +10,8 @@ class Load extends Phaser.Scene {
         var loading = this.add.text(centerX, centerY, 'loading . . .', { fontSize: 50, fill: '#ff0000', fontFamily: '"Micro 5"' }).setOrigin(0.5);
 
         this.load.image('backGround1', "assets/evening.png");
-        this.load.image('backGround2', "assets/night.jpg");
-        this.load.image('backGround3', "assets/day.jpg");
+        this.load.image('backGround2', "assets/night.png");
+        this.load.image('backGround3', "assets/day.png");
         this.load.image('backGround4', "assets/evening.png");
         this.load.image('backGroundMenu', "assets/city20.jpg")
         this.load.image('platform', "assets/brick.png");

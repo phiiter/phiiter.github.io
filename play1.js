@@ -1,10 +1,13 @@
-class play1 extends Phaser.Scene {
+class Play extends Phaser.Scene {
     
     constructor(name, gravity, jumpForce, background) {
         super(name);
+        this.name = name;
         this.gravity = gravity;
         this.jump = jumpForce;
         this.background = background;
+        this.nextScene = 'menu2';
+        this.image;
     }
 
     init() {
@@ -15,24 +18,26 @@ class play1 extends Phaser.Scene {
         var lastY = 680;
         var platforms;
         //var player;
+        
 
         var star;
 
-        function nextScene(currentScene) {
-            if (currentScene == 'play1') {
-                return 'play2';
-            } else if (currentScene == 'play2') {
-                return 'play3';
-            } else if (currentScene == 'play3') {
-                return 'play4';
-            }
+       
+
+        if (this.name === 'play2') {
+            this.nextScene = 'menu3';
+        } else if (this.name === 'play3') {
+            this.nextScene = 'menu4';
+        } else if (this.name === 'play4') {
+            this.nextScene = 'menu5';
         }
-        // next scene string
-        var nextScene = nextScene(this.name);
+
     }
 
 
     create() {
+
+        console.log(this.name);
         
         const width = 10000;
         const height = vh - 16;
@@ -46,10 +51,11 @@ class play1 extends Phaser.Scene {
 
         //console.log(this.textures.list);
 
+        // set background image
         this.image = this.make.tileSprite({
             x: 0,
             y: 0,
-            width: width,
+            width: width/1.4,
             height: height,
             scale: 1024 / height,
             key: this.background,
@@ -100,11 +106,12 @@ class play1 extends Phaser.Scene {
         //GENERATE PLATFORMS
         platforms = this.physics.add.staticGroup();
         platforms.enableBody = true;
+        const platformDistance = this.gravity < 100 ? 500 : 300;
         for (var i = 1; i < 40; i++) {
             const randomNumber = Math.random();
             var platY = platformY();
             //  Create a star inside of the 'stars' group
-            var ledge = platforms.create(i * 300 + randomNumber * 200, platY, randomNumber < 0.3 ? 'platform2' : 'platform');
+            var ledge = platforms.create(i * platformDistance + randomNumber * platformDistance, platY, randomNumber < 0.3 ? 'platform2' : 'platform');
             ledge.body.immovable = true;
             lastY = platY;
             if (i == 39) {
@@ -148,7 +155,7 @@ class play1 extends Phaser.Scene {
         this.physics.add.collider(star, platforms);100
 
         //this.physics.arcade.collide(player, star, this.advance, null, this);
-        this.physics.add.collider(player, star, () => this.scene.start(nextScene));
+        this.physics.add.collider(player, star, () => this.scene.start(this.nextScene));
 
 
         
