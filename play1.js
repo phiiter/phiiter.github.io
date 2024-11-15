@@ -1,282 +1,203 @@
-var backGr;
-var platforms;
-var player;
-var cursors;
-
-var score = 0;
-var scoreText;
-var lastY = 680;
-
-var star;
-
-var play1State = {
+class play1 extends Phaser.Scene {
     
-    create: function() {
+    constructor(name, gravity, jumpForce, background) {
+        super(name);
+        this.gravity = gravity;
+        this.jump = jumpForce;
+        this.background = background;
+    }
+
+    init() {
+        var player;
+        var cursors;
+        var score = 0;
+        var scoreText;
+        var lastY = 680;
+        var platforms;
+        //var player;
+
+        var star;
+
+        function nextScene(currentScene) {
+            if (currentScene == 'play1') {
+                return 'play2';
+            } else if (currentScene == 'play2') {
+                return 'play3';
+            } else if (currentScene == 'play3') {
+                return 'play4';
+            }
+        }
+        // next scene string
+        var nextScene = nextScene(this.name);
+    }
+
+
+    create() {
         
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        backGr = game.add.sprite(0, 0, 'backGround1');
-        game.world.setBounds(0, 0, 10000, 700);
-        backGr.width = 10000; backGr.height = 700;
+        const width = 10000;
+        const height = vh - 16;
+
+        this.camera = this.cameras.main;
+        console.log(this.camera.x);
+        this.camera.setBounds(0, 0, width, height);
         
-        game.sound.stopAll();
-        var music = game.add.audio('backGroundMusic');
+        let centerX = this.cameras.main.width / 2;
+        let centerY = this.cameras.main.height / 2;
+
+        //console.log(this.textures.list);
+
+        this.image = this.make.tileSprite({
+            x: 0,
+            y: 0,
+            width: width,
+            height: height,
+            scale: 1024 / height,
+            key: this.background,
+            add: true
+        });
+        this.image.setOrigin(0,0);
+        
+
+        //this.setWorldBounds(0, 0, 10000, 700);
+        this.physics.world.setBounds(0, 0, width, height);
+        
+
+        this.sound.stopAll();
+        var music = this.sound.add('backGroundMusic');
         music.loop = true;
         music.play();
-        
-    
-    
-        //PLAYER SHIT...
-        player = game.add.sprite(32, game.world.height - 150, 'dude');
-    
-        game.physics.arcade.enable(player);
-        player.body.gravity.y = 1500;
+
+
+
+        // PLAYER INIT...
+        player = this.physics.add.sprite(32, height - 150, 'dude');
+
+        player.body.gravity.y = this.gravity;
         player.body.collideWorldBounds = false;
-    
-        player.animations.add('run', [1,2,3,4], 10, true);
-        
-        
-        
+
+        // create animations
+        this.anims.create({
+            key: 'run',
+            frames: this.anims.generateFrameNumbers('dude', { start: 1, end: 4 }),
+            frameRate: 16,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'stand',
+            frames: [ { key: 'dude', frame: 5 } ],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'fly',
+            frames: [ { key: 'dude', frame: 0 } ],
+            frameRate: 20
+        });
+
+        //player.animations.add('run', [1,2,3,4], 10, true);
+
+
+
         //GENERATE PLATFORMS
-        platforms = game.add.group();
+        platforms = this.physics.add.staticGroup();
         platforms.enableBody = true;
-        for (var i = 0; i < 100; i++) {
+        for (var i = 1; i < 40; i++) {
+            const randomNumber = Math.random();
             var platY = platformY();
             //  Create a star inside of the 'stars' group
-            var ledge = platforms.create(i * 200 + Math.random() * 200, platY, 'platform');
+            var ledge = platforms.create(i * 300 + randomNumber * 200, platY, randomNumber < 0.3 ? 'platform2' : 'platform');
             ledge.body.immovable = true;
             lastY = platY;
+            if (i == 39) {
+                var ledge = platforms.create(width - 100, platY, 'platform2');
+                ledge.body.immovable = true;
+            }
         }
-        ledge = platforms.create(30, game.world.height - 50, 'platform');
+        ledge = platforms.create(80, height - 50, 'platform');
         ledge.body.immovable = true;
-    
-    
-        
-    
-        
+
+
+
         //GOAL STAR
-        star = game.add.sprite(game.world.width - 80, game.world.height / 2, 'star');
-        game.physics.arcade.enable(star);
-        star.enableBody = true;
-        star.body.immovable = true;
-        
+        //star = this.add.sprite(width - 80, height / 2, 'star');
+        star = this.physics.add.sprite(width - 80, 0, 'star');
+
+        star.body.gravity.y = 100;
+        star.body.collideWorldBounds = false;
+
+
         //ARROW-KEY SETUP
-        cursors = game.input.keyboard.createCursorKeys();
+        cursors = this.input.keyboard.createCursorKeys();
         //SCORE TEXT SETUP
-        scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#0ff00f' });
-        scoreText.fixedToCamera = true;
-    
-        game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
-        
+        scoreText = this.add.text(16, 2, 'score: 0', { font: '52px "Micro 5"', fill: '#fff' });
+        scoreText.setScrollFactor(0,0);
+
+        this.camera.startFollow(player);
+
         //RESET dudeFell to false
         dudeFell = false;
-        
-    },
-    
-    
-    update: function() {
-    
+
+    }
+
+
+    update() {
+
         //backGr.tilePosition.x += player.body.velocity.x /75;
-    
-        game.physics.arcade.collide(player, platforms);
-        game.physics.arcade.collide(player, star, this.advance, null, this);
-    
-    
+
+        //this.physics.arcade.collide(player, platforms);
+        this.physics.add.collider(player, platforms);
+        this.physics.add.collider(star, platforms);100
+
+        //this.physics.arcade.collide(player, star, this.advance, null, this);
+        this.physics.add.collider(player, star, () => this.scene.start(nextScene));
+
+
+        
+
         player.body.velocity.x = 0;
-    
+
         if (cursors.left.isDown) {
             //  Move to the left
             player.body.velocity.x = -350;
 
-            player.animations.play('run');
+            player.anims.play('run', true);
         } else if (cursors.right.isDown) {
             //  Move to the right
             player.body.velocity.x = 350;
 
-            player.animations.play('run');
+            player.anims.play('run', true);
+
+            if (player.x > 600 && player.x < 9350) {
+                this.image.tilePositionX -= 1;
+            }
+            
         } else {
             //  Stand still
-            player.animations.stop();
+            player.stop();
 
-            player.frame = 5;
+            player.anims.play('stand');
         }
-    
+
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
-            player.body.velocity.y = -1100;
+            player.body.velocity.y = this.jump;
         }
-    
+
         if (!player.body.touching.down) {
-            player.animations.stop();
-            player.frame = 0;
+            player.stop();
+            player.anims.play('fly');
         }
-    
-        scoreText.text = 'score: ' + Math.floor( player.x / 10 );
-        
+
+        if (star.body.touching.down) {
+            star.body.velocity.y = -200;
+        }
+
+        scoreText.text = 'score: ' + Math.floor(player.x / 50);
+
         if (player.y > 800) {
             dudeFell = true;
-            game.state.start('gameOver');
+            this.scene.start('gameOver');
         }
 
-    },
-    
-    
-    advance: function() {
-        
-        game.state.start('middle1');
-        
     }
 
 }
-
-
-
-
-
-
-
-/*
-
-
-
-/*
-//Creates new platform & updates the lastPlatformX variable
-function createPlatform() {
-    var ledge = platforms.create(lastPlatfromX + Math.random() * 200, game.world.randomY, 'platform');
-    ledge.body.immovable = true;
-    lastPlatformX = ledge.x;
-}
-
-var game = new Phaser.Game(1000, 700, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-
-
-
-function preload() {
-    game.load.image('backGround', "back.jpg");
-    game.load.image('platform', "plat.png");
-    game.load.spritesheet('dude', "dude.png", 64, 64);
-    game.load.image('star', "star.png");
-}
-
-var backGr;
-var platforms;
-var player;
-var cursors;
-
-var score = 0;
-var scoreText;
-
-var lastPlatformX = 1000;
-
-var star;
-
-const levels = [
-    function() {
-        alert('Hei! Tervetuloa kivihiilen matkalle oppimaan lisää ainoasta energianlähteestä, joka voi turvata energiansaantimme kriisitilanteissakin. Pelin edetessä pääset seuraamaan, miten kivihiili muuntautuu energiaksi, joka lämmittää juuri sinun ja perheesi kotia. Hyppää matkaan!');
-        levels.shift()();
-    },
-    function() {
-        //GENERATE PLATFORMS
-        platforms = game.add.group();
-        platforms.enableBody = true;
-        for (var i = 0; i < 100; i++) {
-            //  Create a star inside of the 'stars' group
-            var ledge = platforms.create(i * 200 + Math.random() * 200, game.world.randomY, 'platform');
-            ledge.body.immovable = true;
-        }
-        ledge = platforms.create(30, game.world.height - 50, 'platform');
-        ledge.body.immovable = true;
-        star = platforms.create(10000, game.world.height - 90, 'star')
-        star.body.immovable = true;
-    },
-    function() {
-        alert("jee");
-    }
-]
-
-function create() {
-        
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    backGr = game.add.sprite(0, 0, 'backGround');
-    game.world.setBounds(0, 0, 10000, 700);
-    backGr.width = 10000; backGr.height = 700;
-    
-    
-    levels.shift()();
-    
-    
-    //PLAYER SHIT...
-    player = game.add.sprite(32, game.world.height - 150, 'dude');
-    
-    game.physics.arcade.enable(player);
-    player.body.gravity.y = 1500;
-    player.body.collideWorldBounds = false;
-    
-    player.animations.add('run', [1,2,3,4], 10, true);
-    
-    
-    //ARROW-KEY SETUP
-    cursors = game.input.keyboard.createCursorKeys();
-    //SCORE TEXT SETUP
-    scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#0ff00f' });
-    scoreText.fixedToCamera = true;
-    
-    game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
-};
-
-
-
-function update() {
-    
-    //backGr.tilePosition.x += player.body.velocity.x /75;
-    
-    game.physics.arcade.collide(player, star, function() {
-        levels.shift()();
-    });
-    
-    game.physics.arcade.collide(player, platforms);
-    
-    player.body.velocity.x = 0;
-    
-    if (cursors.left.isDown) {
-        //  Move to the left
-        player.body.velocity.x = -200;
-
-        player.animations.play('run');
-    } else if (cursors.right.isDown) {
-        //  Move to the right
-        player.body.velocity.x = 200;
-
-        player.animations.play('run');
-    } else {
-        //  Stand still
-        player.animations.stop();
-
-        player.frame = 5;
-    }
-    
-    //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown && player.body.touching.down) {
-        player.body.velocity.y = -1100;
-    }
-    
-    if (!player.body.touching.down) {
-        player.animations.stop();
-        player.frame = 0;
-    }
-    
-    scoreText.text = 'score: ' + Math.floor( player.x / 10 );
-    console.log(game.physics.arcade.collide(player, star))
-
-    
-    /*
-    if (lastPlatformX < player.x + 1000) {              //Create new platform if last created is nearer than (player position + screenwidth)
-        createPlatform();
-    }
-    
-    
-    
-};
-
-
-
-*/

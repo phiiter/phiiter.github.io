@@ -1,3 +1,10 @@
+class middle1 extends Phaser.Scene {
+    constructor() {
+        super('middle1');
+    }
+}
+
+
 var middle1State = {
     
      create: function() {

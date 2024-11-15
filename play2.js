@@ -1,123 +1,194 @@
-var backGr;
-var platforms;
-var player;
-var cursors;
+class play2 extends Phaser.Scene {
+    constructor() {
+        super('play2');
+    }
 
-var score = 0;
-var scoreText;
-var lastY = 680;
+    init() {
+        var player;
+        var cursors;
+        var score = 0;
+        var scoreText;
+        var lastY = 680;
+        var platforms;
+        //var player;
 
-var star;
+        var star;
+    }
 
 
-
-
-var play2State = {
-    
-    create: function() {
+    create() {
         
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        backGr = game.add.sprite(0, 0, 'backGround2');
-        game.world.setBounds(0, 0, 10000, 700);
-        backGr.width = 10000; backGr.height = 700;
-    
-    
-        //PLAYER SHIT...
-        player = game.add.sprite(32, game.world.height - 150, 'dude');
-    
-        game.physics.arcade.enable(player);
-        player.body.gravity.y = 500;
+        const width = 10000;
+        const height = vh - 16;
+
+        this.camera = this.cameras.main;
+        console.log(this.camera.x);
+        this.camera.setBounds(0, 0, width, height);
+        
+        let centerX = this.cameras.main.width / 2;
+        let centerY = this.cameras.main.height / 2;
+
+        //console.log(this.textures.list);
+
+        this.image = this.make.tileSprite({
+            x: 0,
+            y: 0,
+            width: width,
+            height: height,
+            scale: 1024 / height,
+            key: 'backGround1',
+            add: true
+        });
+        this.image.setOrigin(0,0);
+        
+
+        //this.setWorldBounds(0, 0, 10000, 700);
+        this.physics.world.setBounds(0, 0, width, height);
+        
+
+        this.sound.stopAll();
+        var music = this.sound.add('backGroundMusic');
+        music.loop = true;
+        music.play();
+
+
+
+        // PLAYER INIT...
+        player = this.physics.add.sprite(32, height - 150, 'dude');
+
+        player.body.gravity.y = 1500;
         player.body.collideWorldBounds = false;
-    
-        player.animations.add('run', [1,2,3,4], 10, true);
-        
-        
-        
+
+        // create animations
+        this.anims.create({
+            key: 'run',
+            frames: this.anims.generateFrameNumbers('dude', { start: 1, end: 4 }),
+            frameRate: 16,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'stand',
+            frames: [ { key: 'dude', frame: 5 } ],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'fly',
+            frames: [ { key: 'dude', frame: 0 } ],
+            frameRate: 20
+        });
+
+        //player.animations.add('run', [1,2,3,4], 10, true);
+
+
+
         //GENERATE PLATFORMS
-        platforms = game.add.group();
+        platforms = this.physics.add.staticGroup();
         platforms.enableBody = true;
-        for (var i = 0; i < 100; i++) {
+        for (var i = 1; i < 40; i++) {
+            const randomNumber = Math.random();
             var platY = platformY();
             //  Create a star inside of the 'stars' group
-            var ledge = platforms.create(i * 700 + Math.random() * 700, platY, 'platform');
+            var ledge = platforms.create(i * 300 + randomNumber * 200, platY, randomNumber < 0.3 ? 'platform2' : 'platform');
             ledge.body.immovable = true;
             lastY = platY;
+            if (i == 39) {
+                var ledge = platforms.create(width - 100, platY, 'platform2');
+                ledge.body.immovable = true;
+            }
         }
-        ledge = platforms.create(30, game.world.height - 50, 'platform');
+        ledge = platforms.create(80, height - 50, 'platform');
         ledge.body.immovable = true;
-    
-    
-        
-    
-        
+
+
+
         //GOAL STAR
-        star = game.add.sprite(game.world.width - 80, game.world.height / 2, 'star');
-        game.physics.arcade.enable(star);
-        star.enableBody = true;
-        star.body.immovable = true;
-        
+        //star = this.add.sprite(width - 80, height / 2, 'star');
+        star = this.physics.add.sprite(width -80, 0, 'star');
+
+        star.body.gravity.y = 100;
+        star.body.collideWorldBounds = false;
+
+
         //ARROW-KEY SETUP
-        cursors = game.input.keyboard.createCursorKeys();
+        cursors = this.input.keyboard.createCursorKeys();
         //SCORE TEXT SETUP
-        scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#0ff00f' });
-        scoreText.fixedToCamera = true;
-    
-        game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
-        
-    },
-    
-    
-    update: function() {
-    
+        scoreText = this.add.text(16, 2, 'score: 0', { font: '52px "Micro 5"', fill: '#fff' });
+        scoreText.setScrollFactor(0,0);
+
+        this.camera.startFollow(player);
+
+        //RESET dudeFell to false
+        dudeFell = false;
+
+    }
+
+
+    update() {
+
         //backGr.tilePosition.x += player.body.velocity.x /75;
-    
-        game.physics.arcade.collide(player, platforms);
-        game.physics.arcade.collide(player, star, this.advance, null, this);
-    
-    
+
+        //this.physics.arcade.collide(player, platforms);
+        this.physics.add.collider(player, platforms);
+        this.physics.add.collider(star, platforms);100
+
+        //this.physics.arcade.collide(player, star, this.advance, null, this);
+        this.physics.add.collider(player, star, this.advance);
+
+
+        
+
         player.body.velocity.x = 0;
-    
+
         if (cursors.left.isDown) {
             //  Move to the left
-            player.body.velocity.x = -600;
+            player.body.velocity.x = -350;
 
-            player.animations.play('run');
+            player.anims.play('run', true);
         } else if (cursors.right.isDown) {
             //  Move to the right
-            player.body.velocity.x = 600;
+            player.body.velocity.x = 350;
 
-            player.animations.play('run');
+            player.anims.play('run', true);
+
+            if (player.x > 600 && player.x < 9350) {
+                this.image.tilePositionX -= 1;
+            }
+            
         } else {
             //  Stand still
-            player.animations.stop();
+            player.stop();
 
-            player.frame = 5;
+            player.anims.play('stand');
         }
-    
+
         //  Allow the player to jump if they are touching the ground.
         if (cursors.up.isDown && player.body.touching.down) {
-            player.body.velocity.y = -700;
-        }
-    
-        if (!player.body.touching.down) {
-            player.animations.stop();
-            player.frame = 0;
-        }
-    
-        scoreText.text = 'score: ' + Math.floor( player.x / 10 );
-        
-        if (player.y > 800) {
-            dudeFell = true;
-            game.state.start('gameOver');
+            player.body.velocity.y = -1200;
         }
 
-    },
-    
-    
-    advance: function() {
-        
-        game.state.start('middle2');
-        
+        if (!player.body.touching.down) {
+            player.stop();
+            player.anims.play('fly');
+        }
+
+        if (star.body.touching.down) {
+            star.body.velocity.y = -200;
+        }
+
+        scoreText.text = 'score: ' + Math.floor(player.x / 50);
+
+        if (player.y > 800) {
+            dudeFell = true;
+            this.scene.start('gameOver');
+        }
+
     }
-    
+
+
+    advance() {
+
+        this.scene.start('middle1');
+
+    }
+
 }
