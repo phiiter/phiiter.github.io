@@ -26,9 +26,6 @@ class Load extends Phaser.Scene {
         });
         this.load.image('star', "assets/coal.png");
         this.load.audio('backGroundMusic', ["assets/Star Commander1.mp3", "assets/Star_Commander1.ogg"]);
-        this.load.image('backGroundM1', "assets/middle1_tausta.jpg");
-        this.load.image('backGroundM2', "assets/middle2_tausta.jpg");
-        this.load.image('backGroundM3', "assets/middle3_tausta.jpg");
         this.load.image('gameOverBackGround', "assets/city20.jpg");
         this.load.audio('gameOverMusic', ["assets/Nighttime-Escape.mp3", "assets/Nighttime-Escape.ogg"]);
 

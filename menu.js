@@ -38,9 +38,12 @@ class Menu extends Phaser.Scene {
 
         
         
+        // var spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        // spaceBar.on('down', listener)
 
 
-        this.input.keyboard.on('keydown', function (event) {
+        this.input.keyboard.on('keydown-SPACE', function (event) {
             this.scene.start(this.nextScene);
             console.log('painettu');
         }, this);

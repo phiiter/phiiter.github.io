@@ -7,9 +7,30 @@ const jumpForces = [-1200, -1600, -500, -1200];
 const backgrounds = ['backGround1', 'backGround1', 'backGround1', 'backGround1'];
 
 // configure the menu scenes
-const menuTitles = ['THE JOURNEY OF COAL', 'YOU GOT YOUR FIRST COAL', 'backGround3', 'backGround4', 'YOU WON!'];
-const menuTexts = ['Go gather coal! See if you can catch all 4 pieces of coal and win the game.', 'Coal is the first fossil fuel utilized by humans.\nWithout coal, our industry would certainly not be where it is today, as coal is an\nenergy source that enabled the Industrial Revolution in England in the 18th century and gave\nrise to the industrial culture through which our world has developed into its current form.', 'backGround3', 'backGround4', 'We hope you have learned a lot and understand coal better.'];
-const menuPrompts = ['Press "SPACE BAR" to start.', 'Press "SPACE BAR" to continue.', 'Press "SPACE BAR" to continue.', 'Press "SPACE BAR" to continue.', 'Press "SPACE BAR" to start again.']
+const menuTitles = [
+    'THE JOURNEY OF COAL', 
+    'YOU GOT YOUR FIRST COAL', 
+    'YOU GOT YOUR SECOND COAL', 
+    'YOU GOT YOUR THIRD COAL', 
+    'YOU WON!',
+    'GAME OVER'
+];
+const menuTexts = [
+    'Go gather coal! See if you can catch all 4 pieces of coal and win the game.', 
+    'Coal is the first fossil fuel utilized by humans.\nWithout coal, our industry would certainly not be where it is today, as coal is an\nenergy source that enabled the Industrial Revolution in England in the 18th century and gave\nrise to the industrial culture through which our world has developed into its current form.',
+    "The environmental impacts of coal should not be underestimated, but\nthey are often unnecessarily feared. Thanks to modern technology, coal has been\ndeveloped into a significantly cleaner energy production method than before. Effective purification\ntechniques have been developed for flue gas emissions, bringing coal's emission\nlimits in line with those of other fuels.", 
+    "Banning coal outright is an unreasonable solution, as no other energy source is as reliable,\naffordable, sufficient, and safe as coal. Coal is an economical way to produce electricity\nand heat, and unlikeoil and natural gas reserves, coal is not located in politically or economically\nunstable regions, making it a less crisis-prone energy source. The coal market remains stable\nbecause there are multiple producers and coal is evenly distributed across the globe.", 
+    'You gathered all four pieces of coal.\nWe hope you have learned a lot about coal.',
+    'Unfortunately, you fell off the coal journey.\nTo learn more, restart the game or visit www.hiilitieto.fi.'
+];
+const menuPrompts = [
+    'Press "SPACE BAR" to start.', 
+    'Press "SPACE BAR" to continue.', 
+    'Press "SPACE BAR" to continue.', 
+    'Press "SPACE BAR" to continue.', 
+    'Press "SPACE BAR" to start again.',
+    'Press "SPACE BAR" to start over.'
+]
 var config = {
     type: Phaser.AUTO,
     width: vw - 16,
@@ -51,7 +72,8 @@ var config = {
             jumpForces[3], 
             backgrounds[3],
         ),
-        new Menu('menu5', menuTitles[4], menuTexts[4], menuPrompts[4], 'play1')
+        new Menu('menu5', menuTitles[4], menuTexts[4], menuPrompts[4], 'play1'),
+        new Menu('gameOver', menuTitles[5], menuTexts[5], menuPrompts[5], 'menu')
     ]
 };
 
@@ -78,11 +100,11 @@ function create() {
 
 
 
-
+var lastY;
 //FOR PLATFORM CREATING
 function platformY() {
     var randY = Math.random() * 500 + 100;
-    if (lastY > 400 && randY < 200) {
+    if (lastY > 400 && randY < 210) {
         return randY + 400;
     } else {
         return randY;
