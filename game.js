@@ -1,5 +1,5 @@
 // set the view height and width
-let vw = Math.min(document.documentElement.clientWidth || 0, window.innerWidth, 1356);
+let vw = Math.min(document.documentElement.clientWidth || 0, window.innerWidth, 1230);
 let vh = Math.min(document.documentElement.clientHeight || 0, window.innerHeight, 700);
 
 // configure the game scenes
