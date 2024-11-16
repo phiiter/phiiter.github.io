@@ -1,3 +1,4 @@
+// set the view height and width
 let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 1356);
 let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 635);
 
