@@ -1,6 +1,6 @@
 // set the view height and width
-let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 1356);
-let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 635);
+let vw = Math.min(document.documentElement.clientWidth || 0, window.innerWidth || 1356);
+let vh = Math.min(document.documentElement.clientHeight || 0, window.innerHeight || 635);
 
 // configure the game scenes
 const gravities = [1500, 2500, 14, 1500];
